@@ -31,8 +31,12 @@ view model =
         ]
 
 
+initialErrors =
+    { username = "bad username", password = "bad password" }
+
+
 -- Take a look at this starting model we’re passing to our view function.
 -- Note that in Elm syntax, we use = to separate fields from values
 -- instead of : like JavaScript uses for its object literals.
 main =
-    view { username = "", password = "" }
+    view { username = "", password = "", errors = initialErrors }

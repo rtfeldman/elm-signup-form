@@ -12261,6 +12261,9 @@ Elm.SignupForm.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
+   var initialErrors = {_: {}
+                       ,password: "bad password"
+                       ,username: "bad username"};
    var view = function (model) {
       return A2($Html.form,
       _L.fromArray([$Html$Attributes.id("signup-form")]),
@@ -12275,6 +12278,9 @@ Elm.SignupForm.make = function (_elm) {
                                 ,$Html$Attributes.type$("text")
                                 ,$Html$Attributes.value(model.username)]),
                    _L.fromArray([]))
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("validation-error")]),
+                   _L.fromArray([$Html.text(model.errors.username)]))
                    ,A2($Html.label,
                    _L.fromArray([$Html$Attributes.$for("password")]),
                    _L.fromArray([$Html.text("password: ")]))
@@ -12283,15 +12289,20 @@ Elm.SignupForm.make = function (_elm) {
                                 ,$Html$Attributes.type$("password")
                                 ,$Html$Attributes.value(model.password)]),
                    _L.fromArray([]))
-                   ,A2($Html.button,
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("validation-error")]),
+                   _L.fromArray([$Html.text(model.errors.password)]))
+                   ,A2($Html.div,
                    _L.fromArray([$Html$Attributes.$class("signup-button")]),
                    _L.fromArray([$Html.text("Sign Up!")]))]));
    };
    var main = view({_: {}
+                   ,errors: initialErrors
                    ,password: ""
                    ,username: ""});
    _elm.SignupForm.values = {_op: _op
                             ,view: view
+                            ,initialErrors: initialErrors
                             ,main: main};
    return _elm.SignupForm.values;
 };
