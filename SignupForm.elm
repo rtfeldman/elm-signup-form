@@ -16,8 +16,11 @@ import Html.Events exposing (..)
 -- namespace, specifically "id", "type'", "for", "value", and "class".
 import Html.Attributes exposing (id, type', for, value, class)
 
+import StartApp
+import Effects
 
-view model =
+
+view actionDispatcher model =
     form
         [ id "signup-form" ]
         [ h1 [] [ text "Sensational Signup Form" ]
@@ -27,16 +30,47 @@ view model =
         , label [ for "password" ] [ text "password: " ]
         , input [ id "password-field", type' "password", value model.password ] []
         , div [ class "validation-error" ] [ text model.errors.password ]
-        , div [ class "signup-button" ] [ text "Sign Up!" ]
+        , div [ class "signup-button", onClick actionDispatcher { actionType = "VALIDATE" } ] [ text "Sign Up!" ]
         ]
 
 
 initialErrors =
-    { username = "bad username", password = "bad password" }
+    { username = "", password = "" }
 
 
--- Take a look at this starting model we’re passing to our view function.
--- Note that in Elm syntax, we use = to separate fields from values
--- instead of : like JavaScript uses for its object literals.
+getErrors model =
+    { username =
+        if model.username == "" then
+            "Please enter a username!"
+        else
+            ""
+
+    , password =
+        if model.password == "" then
+            "Please enter a password!"
+        else
+            ""
+    }
+
+
+update action model =
+    if action.actionType == "VALIDATE" then
+        ({ model | errors <- getErrors model }, Effects.none)
+    else
+        (model, Effects.none)
+
+
+initialModel =
+    { username = "", password = "", errors = initialErrors }
+
+
+app =
+    StartApp.start
+        { init = (initialModel, Effects.none)
+        , update = update
+        , view = view
+        , inputs = []
+        }
+
 main =
-    view { username = "", password = "", errors = initialErrors }
+    app.html
