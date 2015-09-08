@@ -69,9 +69,9 @@ update action model =
     if action.actionType == "VALIDATE" then
         ({ model | errors <- getErrors model }, Effects.none)
     else if action.actionType == "SET_USERNAME" then
-        ({ model | username <- action.payload }, Effects.none)
+        ({ model | username <- action.payload, errors <- initialErrors }, Effects.none)
     else if action.actionType == "SET_PASSWORD" then
-        ({ model | password <- action.payload }, Effects.none)
+        ({ model | password <- action.payload, errors <- initialErrors }, Effects.none)
     else
         (model, Effects.none)
 

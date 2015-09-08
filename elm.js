@@ -12443,6 +12443,9 @@ Elm.SignupForm.make = function (_elm) {
              ,username: _U.eq(model.username,
              "") ? "Please enter a username!" : ""};
    };
+   var initialErrors = {_: {}
+                       ,password: ""
+                       ,username: ""};
    var update = F2(function (action,
    model) {
       return _U.eq(action.actionType,
@@ -12453,20 +12456,19 @@ Elm.SignupForm.make = function (_elm) {
                     ,_1: $Effects.none} : _U.eq(action.actionType,
       "SET_USERNAME") ? {ctor: "_Tuple2"
                         ,_0: _U.replace([["username"
-                                         ,action.payload]],
+                                         ,action.payload]
+                                        ,["errors",initialErrors]],
                         model)
                         ,_1: $Effects.none} : _U.eq(action.actionType,
       "SET_PASSWORD") ? {ctor: "_Tuple2"
                         ,_0: _U.replace([["password"
-                                         ,action.payload]],
+                                         ,action.payload]
+                                        ,["errors",initialErrors]],
                         model)
                         ,_1: $Effects.none} : {ctor: "_Tuple2"
                                               ,_0: model
                                               ,_1: $Effects.none};
    });
-   var initialErrors = {_: {}
-                       ,password: ""
-                       ,username: ""};
    var initialModel = {_: {}
                       ,errors: initialErrors
                       ,password: ""
