@@ -25,12 +25,24 @@ view actionDispatcher model =
         [ id "signup-form" ]
         [ h1 [] [ text "Sensational Signup Form" ]
         , label [ for "username-field" ] [ text "username: " ]
-        , input [ id "username-field", type' "text", value model.username ] []
+        , input
+            [ id "username-field"
+            , type' "text"
+            , value model.username
+            , on "input" targetValue (\str -> Signal.message actionDispatcher { actionType = "SET_USERNAME", payload = str })
+            ]
+            []
         , div [ class "validation-error" ] [ text model.errors.username ]
         , label [ for "password" ] [ text "password: " ]
-        , input [ id "password-field", type' "password", value model.password ] []
+        , input
+            [ id "password-field"
+            , type' "password"
+            , value model.password
+            , on "input" targetValue (\str -> Signal.message actionDispatcher { actionType = "SET_PASSWORD", payload = str })
+            ]
+            []
         , div [ class "validation-error" ] [ text model.errors.password ]
-        , div [ class "signup-button", onClick actionDispatcher { actionType = "VALIDATE" } ] [ text "Sign Up!" ]
+        , div [ class "signup-button", onClick actionDispatcher { actionType = "VALIDATE", payload = "" } ] [ text "Sign Up!" ]
         ]
 
 
@@ -56,6 +68,10 @@ getErrors model =
 update action model =
     if action.actionType == "VALIDATE" then
         ({ model | errors <- getErrors model }, Effects.none)
+    else if action.actionType == "SET_USERNAME" then
+        ({ model | username <- action.payload }, Effects.none)
+    else if action.actionType == "SET_PASSWORD" then
+        ({ model | password <- action.payload }, Effects.none)
     else
         (model, Effects.none)
 

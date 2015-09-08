@@ -12450,9 +12450,19 @@ Elm.SignupForm.make = function (_elm) {
                     ,_0: _U.replace([["errors"
                                      ,getErrors(model)]],
                     model)
-                    ,_1: $Effects.none} : {ctor: "_Tuple2"
-                                          ,_0: model
-                                          ,_1: $Effects.none};
+                    ,_1: $Effects.none} : _U.eq(action.actionType,
+      "SET_USERNAME") ? {ctor: "_Tuple2"
+                        ,_0: _U.replace([["username"
+                                         ,action.payload]],
+                        model)
+                        ,_1: $Effects.none} : _U.eq(action.actionType,
+      "SET_PASSWORD") ? {ctor: "_Tuple2"
+                        ,_0: _U.replace([["password"
+                                         ,action.payload]],
+                        model)
+                        ,_1: $Effects.none} : {ctor: "_Tuple2"
+                                              ,_0: model
+                                              ,_1: $Effects.none};
    });
    var initialErrors = {_: {}
                        ,password: ""
@@ -12474,7 +12484,17 @@ Elm.SignupForm.make = function (_elm) {
                    ,A2($Html.input,
                    _L.fromArray([$Html$Attributes.id("username-field")
                                 ,$Html$Attributes.type$("text")
-                                ,$Html$Attributes.value(model.username)]),
+                                ,$Html$Attributes.value(model.username)
+                                ,A3($Html$Events.on,
+                                "input",
+                                $Html$Events.targetValue,
+                                function (str) {
+                                   return A2($Signal.message,
+                                   actionDispatcher,
+                                   {_: {}
+                                   ,actionType: "SET_USERNAME"
+                                   ,payload: str});
+                                })]),
                    _L.fromArray([]))
                    ,A2($Html.div,
                    _L.fromArray([$Html$Attributes.$class("validation-error")]),
@@ -12485,7 +12505,17 @@ Elm.SignupForm.make = function (_elm) {
                    ,A2($Html.input,
                    _L.fromArray([$Html$Attributes.id("password-field")
                                 ,$Html$Attributes.type$("password")
-                                ,$Html$Attributes.value(model.password)]),
+                                ,$Html$Attributes.value(model.password)
+                                ,A3($Html$Events.on,
+                                "input",
+                                $Html$Events.targetValue,
+                                function (str) {
+                                   return A2($Signal.message,
+                                   actionDispatcher,
+                                   {_: {}
+                                   ,actionType: "SET_PASSWORD"
+                                   ,payload: str});
+                                })]),
                    _L.fromArray([]))
                    ,A2($Html.div,
                    _L.fromArray([$Html$Attributes.$class("validation-error")]),
@@ -12495,7 +12525,8 @@ Elm.SignupForm.make = function (_elm) {
                                 ,A2($Html$Events.onClick,
                                 actionDispatcher,
                                 {_: {}
-                                ,actionType: "VALIDATE"})]),
+                                ,actionType: "VALIDATE"
+                                ,payload: ""})]),
                    _L.fromArray([$Html.text("Sign Up!")]))]));
    });
    var app = $StartApp.start({_: {}
