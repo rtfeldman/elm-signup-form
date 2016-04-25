@@ -67,13 +67,13 @@ getErrors model =
 
 update action model =
     if action.actionType == "VALIDATE" then
-        ({ model | errors <- getErrors model }, Effects.none)
+        ( { model | errors = getErrors model }, Effects.none )
     else if action.actionType == "SET_USERNAME" then
-        ({ model | username <- action.payload, errors <- initialErrors }, Effects.none)
+        ( { model | username = action.payload }, Effects.none )
     else if action.actionType == "SET_PASSWORD" then
-        ({ model | password <- action.payload, errors <- initialErrors }, Effects.none)
+        ( { model | password = action.payload }, Effects.none )
     else
-        (model, Effects.none)
+        ( model, Effects.none )
 
 
 initialModel =
